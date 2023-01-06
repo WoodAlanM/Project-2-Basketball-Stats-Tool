@@ -1,3 +1,6 @@
+# Basketball Stats Tool
+# 1/6/2023
+
 from constants import PLAYERS, TEAMS
 import random
 import string
