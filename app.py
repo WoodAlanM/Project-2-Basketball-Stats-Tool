@@ -2,11 +2,14 @@ from constants import PLAYERS, TEAMS
 import random
 import string
 
+# Function to read in the data from 
+# the constants file and reformat it 
 def clean_data():
     new_players_data = []
     for player in PLAYERS:
         working_dict = {}
         working_dict["name"] = player["name"]
+        # Seperate the string to get height
         working_height = player["height"].split(" ")[0]
         working_dict["height"] = int(working_height)
         if player["experience"] == "NO":
@@ -18,7 +21,7 @@ def clean_data():
         new_players_data.append(working_dict)  
     return new_players_data
 
-
+# Function for randomly assigning players to each team
 def balance_teams():
     num_players_per_team = len(PLAYERS) / len(TEAMS)
     unchosen_player_list = clean_data()
@@ -27,8 +30,13 @@ def balance_teams():
         working_player_list = []
         player_count = 0
         while True:
-            if len(unchosen_player_list) != 1:
+            # Choose a random player from the unchosen list
+            # and remove that player from the same list
+            if len(unchosen_player_list) != 0:
                 random_num = random.randint(0, len(unchosen_player_list) - 1)
+            elif len(unchosen_player_list) <= num_players_per_team:
+                team_player_dict[team] = unchosen_player_list
+                break
             else:
                 random_num = 0
             random_player = unchosen_player_list[random_num]
@@ -48,6 +56,7 @@ def stats_tool():
     main_menu = True
     sub_menu = False
 
+    # Prompt user with main menu
     print("Basketball Team Stats Tool")
     print("----Menu----")
     print("\nHere are your choices:")
@@ -56,20 +65,26 @@ def stats_tool():
     
     while main_menu:
         choice = input("Enter an option: ")
-        if choice != "A" or choice != "a" or choice != "B" or choice != "b":
-            print("Please choose either A or B.")
-            continue
-        elif choice == "A" or choice == "a":
+        print(type(choice))
+        print(choice)
+        # Validate user input
+        if choice == 'A' or choice == 'a':
             sub_menu = True
+            main_menu = False
+            break
+        elif choice == 'B' or choice == 'b':
+            main_menu = False
             break
         else:
-            break
+            print("Please choose either A or B.")
 
     if sub_menu:
         letter_list = list(string.ascii_uppercase)
         chooseable_dict = {}
         chooseable_letter_list = []
         for team in TEAMS:
+                # Create and display a list of teams with
+                # a alphabetized letter assignment
                 print(letter_list[0] + ") " + team)
                 chooseable_dict[letter_list[0]] = team
                 chooseable_letter_list.append(letter_list[0])
@@ -103,10 +118,10 @@ def stats_tool():
                 average_height = total_height / total_players
                 player_list_string = ", ".join(player_list)
                 guardian_list_string = ", ".join(guardian_list)
-                print("\nTotal playres: " + total_players)
-                print("Number of experienced playres: " + num_experienced)
-                print("Number of unexperienced playres: " + num_unexperienced)
-                print("Average height: " + average_height)
+                print("\nTotal playres: " + str(total_players))
+                print("Number of experienced playres: " + str(num_experienced))
+                print("Number of unexperienced playres: " + str(num_unexperienced))
+                print("Average height: " + str(average_height))
                 print("\nPlayer list:")
                 print(player_list_string)
                 print("\nGuardian list:")
